@@ -1,0 +1,25 @@
+{
+  "name": "websockets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarryWho/WebSockets.git"
+  },
+  "author": "Calvin Bartlett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HarryWho/WebSockets/issues"
+  },
+  "homepage": "https://github.com/HarryWho/WebSockets#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "ws": "^5.0.0"
+  }
+}
