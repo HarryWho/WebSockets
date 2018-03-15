@@ -1,9 +1,15 @@
  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">My Page</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-        <a class="nav-link" href="/users/login">Login / Register</a>
-    </li>
+    <input class="form-control form-control-dark w-70" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-5">
+    
+        {{#if user}}
+            <li class="nav-item text-nowrap"><a class="nav-link" href="/users/logout">Logout</a></li>
+        {{else}}
+        <li class="nav-item text-nowrap">
+        <a class="nav-link" href="/users/login">Login / Register</a></li>
+        {{!-- <li class="nav-item text-nowrap"><a class="nav-link" href="/users/login">Register</a></li> --}}
+        {{/if}}
+    
     </ul>
 </nav>

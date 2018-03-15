@@ -43,6 +43,7 @@ app.use(function(req, res, next){
     res.locals.success_msg=req.flash('success_msg');
     res.locals.error_msg=req.flash('error_msg');
     res.locals.error=req.flash('error');
+    res.locals.user=req.user||null;
     next();
 });
 app.use('/', index);
@@ -57,7 +58,7 @@ app.listen(5001, function(){
 
 // websocket stuff
 var s = new server({port:5000},()=>{
-    console.log("Websocket now listening on port 5000")
+    
 });
 
 s.on('connection', (ws)=>{
@@ -66,7 +67,7 @@ s.on('connection', (ws)=>{
        message=JSON.parse(message);
         
         if(message.type==="name"){
-            ws.personName = message.name;
+            ws.personName = req.user.username;
             var joinMsg='';
             s.clients.forEach(function (client){
                 if(ws.personName === client.personName){
@@ -93,6 +94,6 @@ s.on('connection', (ws)=>{
         }
         
     });
-    console.log("Websocket connected");
+    // console.log("Websocket connected");
 });
 
