@@ -48,3 +48,7 @@ module.exports.compareUser = function(candidatePassword, hash, callback){
         callback(null,isMatch);
     });
 }
+module.exports.findUserByIdAndUpdatehasValidated = function(id,callback){
+    var query = { _id: id };
+    User.findOneAndUpdate(query, { $set: { hasValidated: true }}, callback);
+}
