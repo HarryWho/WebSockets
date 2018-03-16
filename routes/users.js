@@ -13,7 +13,7 @@ router.get('/sendemail/:id', (req, res, next)=>{
     User.getUserById(id,(err,user)=>{
         if(err) throw err;
         SendEmail(user,next);
-        res.render('/login',{success_msg:'An email has been sent! Please validate using the link that was sent'});
+        res.render('login',{success_msg:'An email has been sent! Please validate using the link that was sent'});
     });
 });
 passport.use(new LocalStrategy(
@@ -23,6 +23,7 @@ passport.use(new LocalStrategy(
         if(!user){
             return done(null, false, {message:'Unknown User'})
         }else if(!user.hasValidated){
+            SendEmail(user);
             done(null, false, {message:'Please validate your request from the email that was sent'});
             
         }
@@ -91,22 +92,29 @@ router.post('/register', function(req,res,next){
             if(err) throw err;
             console.log(user._id);
             // send mail
-            SendEmail(user, next);
+            SendEmail(user);
          
          });
          
 
-         req.flash('success_msg','You have successfully registered. You may now Login');
+         req.flash('success_msg','You have successfully registered. Please check your email and follow the directions to validate');
          res.redirect('/users/login');
      }
 });
-function SendEmail(user,next){
-    const output=`
+function SendEmail(user){
+    const htmloutput=`
          <h1>${user.username}</h1>
          <h3>Thank you for registering with us</h3>
          <p>Please follow the below link to validate your request</p>
          <a title='click to validate registration' href='http://localhost:5001/users/validate/${user.id}'>Validate Registration</a>
       `;
+    const textoutput=`
+    Hello ${user.username}
+    Thank you for registering with us
+    Please follow the below link to validate your request
+    Copy and paste the following URL into you Browser to validate registration
+    http://localhost:5001/users/validate/${user.id}
+ `;
             // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -124,7 +132,8 @@ function SendEmail(user,next){
             to:    `"${user.email}"`,   //'bar@example.com, baz@example.com', // list of receivers
             subject: 'Validate Registration ✔', // Subject line
             // text: output, // plain text body
-            html: output // html body
+            html: htmloutput, // html body
+            text: textoutput
         };
         console.log(mailOptions.to+' '+output);
         // send mail with defined transport object
@@ -139,12 +148,17 @@ function SendEmail(user,next){
             // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
             // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
         });
-        return next();
+        return;
 }
 router.get('/logout', (req, res)=>{
+    console.log(req.user);
     req.logOut();
-
-    res.redirect('/users/login');
+    // setTimeout((err)=>{ 
+        // console.log(req.user);
+        res.render('login',{success_msg:"successfully loged out",title:'Login',user:null});
+    // },1000);
+   
+    
 
 });
 module.exports=router;

@@ -9,7 +9,7 @@ button.addEventListener('click',function(){
     socket.send(message);
 })
 socket.onopen=function(event){
-   
+    
    
 };
 socket.onmessage = function(message){
@@ -22,3 +22,4 @@ socket.onmessage = function(message){
     
     
 };
+
